@@ -21,6 +21,27 @@ body {
     background-color: #5ba4a4;
 }
 
+.searchbar {
+    background-color: #ffffff;
+    /* position: relative; */
+    /* transform: translateY(-100px); */
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    margin: -100px 45px;
+}
+
+.searchbar li {
+    margin-right: 20px;
+}
+
+.close {
+    display: inline-block;
+    background-color: #5ba4a4;
+    padding: 5px;
+    color: #ffffff;
+}
+
 .job-board {
     padding-top: 78px;
     padding-bottom: 78px;
@@ -88,7 +109,7 @@ h1 {
     margin-left: 20px;
 }
 
-.filters button {
+.filters button, .searchbar button {
     font-size: 0.88em;
     background-color: #eef6f6;
     color: #5ba4a4;
