@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description"
-    content="Easybank Landing Page, a Frontend Mentor challenge solution by Masuka Meem using HTML, CSS, Bootstrap and, Javascript. Served as a frontend developer portfolio sample.">
+    content="Job Listings, a Frontend Mentor challenge solution by Masuka Meem using HTML, CSS, Bootstrap and, Vuejs. Served as a frontend developer portfolio sample.">
 
   <!-- displays site properly based on user's device -->
   <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
@@ -29,6 +29,15 @@
 
   <div class="job-board" id="app">
     <div class="container p-0">
+      <div v-if="filters.length != 0" class="row justify-content-center">
+        <div class="col-11">
+          <ul class="nav searchbar">
+            <li v-for="(filter, index) in filters" :key="index">
+              <button class="btn">{{ filter }} <span @click="removeFilter(index)" class="close">X</span></button>
+            </li>
+          </ul>
+        </div>
+      </div>
       <div class="row justify-content-center">
         <!-- ******************************************* -->
         <div v-for="(job, index) in jobs" :key="index" class="col-11">
@@ -52,17 +61,16 @@
                   <li>{{ job.location }}</li>
                 </ul>
               </div>
-              <div v-if="job.languages || job.tols" class="col-md col pe-2">
+              <div class="col-md col pe-2">
                 <ul class="nav filters justify-content-end">
-                  <li><button class="btn">{{ job.role }}</button></li>
-                  <li><button class="btn">{{ job.level }}</button></li>
-
-                  <div v-for="(item, index) in job.languages" :key="index">
-                    <li><button class="btn">{{ item }}</button></li>
-                  </div>
-                  <div v-for="(item, index) in job.tools" :key="index">
-                    <li><button class="btn">{{ item }}</button></li>
-                  </div>
+                  <li><button @click="filterJob(job.role)" class="btn">{{ job.role }}</button></li>
+                  <li><button @click="filterJob(job.level)" class="btn">{{ job.level }}</button></li>
+                    <li v-for="item in job.languages" :key="index">
+                      <button @click="filterJob(item)" class="btn">{{ item }}</button>
+                    </li>
+                    <li v-for="(item, index) in job.tools" :key="index">
+                      <button @click="filterJob(item)" class="btn">{{ item }}</button>
+                    </li>
                 </ul>
               </div>
             </div>
@@ -118,7 +126,6 @@
   <!-- Vue -->
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
   <!-- Axios -->
-  <!-- Axios -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
   <script>
@@ -126,7 +133,8 @@
     new Vue ({
       el: '#app',
       data: {
-        jobs: []
+        jobs: [],
+        filters: []
       },
       mounted() {
         this.fetchJobs()
@@ -136,6 +144,15 @@
           axios.get('https://raw.githubusercontent.com/masukameem/job-listing/main/data.json').then(response => {
             this.jobs = response.data
           })
+        },
+        filterJob(item) {
+          if (this.filters.includes(item)) {
+          return;
+          }
+          this.filters.push(item)
+        },
+        removeFilter(index) {
+          this.filters.splice(index, 1)
         }
       }
     })
